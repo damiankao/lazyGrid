@@ -1,0 +1,77 @@
+<html>
+<head>
+</head>
+<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="lazyGrid.js"></script>
+	<script>
+		var e = document.body.appendChild(document.createElement('div'));
+		d3.select(e)
+			.style('position','absolute')
+			.style('width',500)
+			.style('height',300)
+			.style('top',10)
+			.style('left',10)
+			.style('border-bottom','1px solid #5C5C5C')
+			.style('border-right','1px solid #5C5C5C')
+			
+		r = [];
+		for (var i = 0 ; i < 5000 ; i ++ ) {
+			r.push(['row ' + i]);
+		}
+
+		c = [];
+		for (var i = 0 ; i < 100 ; i ++ ) {
+			c.push(['col ' + i]);
+		}
+
+		var l = new lazyGrid(e)
+			.cellPadding(4)
+			.alternate(true)
+			//.colHeader([c], 20)
+			//.rowHeader(r, 80)
+			.addRowHeader(r, 80)
+			.addColHeader(c, 20)
+			.scrollLimit(20,14)
+			.eachCell(function(cell, row, col) {
+				cell.style.textAlign = 'center';
+				cell.style.fontFamily = 'Arial';
+				cell.style.fontSize = '8pt';
+				cell.style.color = '#5C5C5C';
+				cell.style.overflow = 'hidden';
+				cell.style.whiteSpace = 'nowrap';
+				cell.style.textOverflow = 'ellipsis';
+				cell.style.borderLeft = '1px dotted gray'
+				cell.style.borderBottom = '1px solid gray'
+
+				cell.onmouseover = function() {
+					document.body.style.cursor = 'default';
+					cell.style.fontWeight = 'bold';
+					cell.style.color = "black";
+					cell.style.fontSize = '10pt';
+				};
+
+				cell.onclick = function() {
+					console.log(cell.row + ', ' + cell.col);
+				}
+
+				cell.onmouseout = function() {
+					document.body.style.cursor = 'default';
+					cell.style.fontWeight = 'normal';
+					cell.style.color = "#5C5C5C";
+					cell.style.fontSize  = '8pt';
+				}
+
+				cell.onmousedown = function(e) {
+					e.preventDefault();
+				}
+			})
+			.eachCellRender(function(cell, data, row, col) {
+				cell.row = row;
+				cell.col = col;
+				cell.innerHTML = data;
+			});
+
+	</script>
+</body>
+</html>
